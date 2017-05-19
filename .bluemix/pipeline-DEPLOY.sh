@@ -23,8 +23,10 @@ if ! cf app $CF_APP; then
   cf set-env $CF_APP ERP_SERVICE https://$ERP_SERVICE_APP_NAME$domain
   cf set-env $CF_APP OPENWHISK_AUTH "${OPENWHISK_AUTH}"
   cf set-env $CF_APP OPENWHISK_PACKAGE ${RECOMMENDATION_PACKAGE_NAME}
-  cf set-env $CF_APP OW_API_KEY ${OW_API_KEY}
-  cf set-env $CF_APP OW_API_URL ${OW_API_URL}
+  if [[ ${OW_API_KEY} && ${OW_API_URL} ]]; then
+    cf set-env $CF_APP OW_API_KEY ${OW_API_KEY}
+    cf set-env $CF_APP OW_API_URL ${OW_API_URL}
+  fi
   cf start $CF_APP
 else
   OLD_CF_APP=${CF_APP}-OLD-$(date +"%s")
